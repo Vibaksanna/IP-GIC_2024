@@ -1,16 +1,37 @@
 <script>
-//import { ref } from 'vue';
-import Promotion from './views/Promotion.vue';
-import Categories from  './views/Categories.vue'
+import axios from 'axios';
+import CategoryComponent from './components/CategoryComponent.vue';
+import CategoryPromotion from './components/CategoryPromotion.vue';
+
 export default {
+
     components: {
-        Categories,
-        Promotion
+        CategoryComponent,
+        CategoryPromotion
+    },
+
+    mounted(){
+        this.fetchCategoryComponent();
+        this.fetchCategoryPromotion();
+    },
+
+    methods:{
+        fetchCategoryComponent(){
+            axios.get("http://localhost:3000/api/categories").then((result) => {
+                console.log(result.data);
+            });
+        },
+
+        fetchCategoryPromotion(){
+            axios.get("http://localhost:3000/api/promotions").then((result) => {
+                console.log(result.data);
+            });
+        }
     }
 }
 </script>
 
 <template>
-    <Categories/>
-    <Promotion/>
+    <CategoryComponent/>
+    <CategoryPromotion/>
 </template>

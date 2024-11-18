@@ -1,35 +1,61 @@
 <template>
     <div class="container-promotions">
-        <div class="banner" :style={background}>
-            <div class="text">
-                <h3 class="name">{{ name }}</h3>
-            </div>
+        <div v-for="promotion in promotions" 
+            :key="promotion.id" class="banner"
+            :style="{background: promotion.background}">
 
-            <div class="promotion-image">
-                <img :src="image" :alt="image"/>
-            </div>
+                <div class="text">
+                    <h3 class="name">{{ promotion.name }}</h3>
+                </div>
 
-            <button class="shop-button"> Shop now
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path 
-                            d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z">
-                        </path>
-                    </svg>
-            </button>
+                <div class="promotion-image">
+                    <img :src="promotion.image" :alt="image"/>
+                </div>
 
+                <ButtonPromotion />
 
         </div>
+
     </div>
 </template>
 
 <script>
-    export default{
-        props:{
-            background: String,
-            image: String,
-            name: String
-        }
+import { ref } from 'vue';
+import ButtonPromotion from './Button_Promotion.vue'; // Specifies the Button_Promotion file
+
+export default{
+
+    components:{
+        ButtonPromotion
+    },
+
+    setup(){
+        const promotions=ref([
+            {
+                id: 1, 
+                image: './src/assets/Images/onion.jpg', 
+                name:'Everyday Fresh &\n Clean with Our\n Products',
+                button:'Shop now',
+                background:'#F0E8D5'
+            },
+            {
+                id: 2, 
+                image: './src/assets/Images/bottle.png', 
+                name:'Make your Breakfast\n Healthy and Easy',
+                background:'#F3E8E8'
+            },
+            {
+                id: 3, 
+                image: './src/assets/Images/organic.jpg', 
+                name:'The best Organic\n Products Online',
+                background:'#E7EAF3'
+            }
+
+        ]);
+        return {promotions};
+
     }
+};
 
 </script>
 
@@ -37,22 +63,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 
 .container-promotions{
-    flex-wrap: wrap;
-    border-radius: 20px;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    color: #333;
     
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content:center ;
+    margin-top: 12px;
+    gap: 10px;
 }
 
 .banner{
 
     position: relative;
     width: fit-content;
-    display: grid;
+    display: flex;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     width: 530px;
@@ -63,7 +87,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     overflow: hidden;
 }
 .text{
@@ -89,35 +113,6 @@ h3{
     position: absolute; 
     bottom: -35px;
     right: -20px;
-}
-.shop-button {
-    top: 70%;
-    left: 25%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    display: flex;
-    align-items: center;
-    /* justify-content: center; */
-    background-color: #36b37e;
-    color: white;
-    font-size: 1.5em;
-    font-family: Arial, sans-serif;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
-    z-index: 1;
-}
-.shop-button:hover {
-    background-color: #2a9265; /* Darker shade on hover */
-}
-.shop-button svg {
-    margin-left: 10px;
-    width: 24px;
-    height: 24px;
-    fill: white;
 }
 
 </style>
