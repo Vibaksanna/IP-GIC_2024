@@ -1,61 +1,39 @@
 <template>
-    <div class="container-promotions">
-        <div v-for="promotion in promotions" 
-            :key="promotion.id" class="banner"
-            :style="{background: promotion.background}">
 
-                <div class="text">
-                    <h3 class="name">{{ promotion.name }}</h3>
-                </div>
+    <div class="container-promotion">
+        <div :style="{ backgroundColor: color }" class="banner">
 
-                <div class="promotion-image">
-                    <img :src="promotion.image" :alt="image"/>
-                </div>
+            <div class="text">
+                <h3 class="name">{{ title }}</h3>
+            </div>
 
-                <ButtonPromotion />
-
+            <div class="promotion-image">
+                <img :src="image" :alt="image"/>
+            </div>
+            <ButtonPromotion :buttonColor="buttonColor"/>
         </div>
-
     </div>
+
 </template>
 
 <script>
-import { ref } from 'vue';
+
 import ButtonPromotion from './Button_Promotion.vue'; // Specifies the Button_Promotion file
 
 export default{
+    props:{
+        title: String,
+        image: String,
+        color: String,
+        buttonColor: String,
+    },
 
     components:{
         ButtonPromotion
     },
 
-    setup(){
-        const promotions=ref([
-            {
-                id: 1, 
-                image: './src/assets/Images/onion.jpg', 
-                name:'Everyday Fresh &\n Clean with Our\n Products',
-                button:'Shop now',
-                background:'#F0E8D5'
-            },
-            {
-                id: 2, 
-                image: './src/assets/Images/bottle.png', 
-                name:'Make your Breakfast\n Healthy and Easy',
-                background:'#F3E8E8'
-            },
-            {
-                id: 3, 
-                image: './src/assets/Images/organic.jpg', 
-                name:'The best Organic\n Products Online',
-                background:'#E7EAF3'
-            }
-
-        ]);
-        return {promotions};
-
-    }
-};
+}
+    
 
 </script>
 
@@ -73,7 +51,7 @@ export default{
 }
 
 .banner{
-
+    margin: 8px;
     position: relative;
     width: fit-content;
     display: flex;
@@ -94,25 +72,26 @@ export default{
     position: absolute; 
     top: 40px;
     left: 45px;
-    font-family: 'Quicksand', sans-serif;
     font-size: 2rem;
     margin: 0 0 10px;
     z-index: 1;
-    white-space: pre-line;
 
 }
 h3{
-    top: 70px;
     font-family: 'Quicksand', sans-serif;
-    font-size: 2rem;
+    font-size: 27px;
     margin: 0 0 10px;
-    z-index: 1;
-    white-space: pre-line;
+    width: 320px;
 }
 .promotion-image{
     position: absolute; 
     bottom: -35px;
     right: -20px;
+}
+.promotion-image image{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 </style>
