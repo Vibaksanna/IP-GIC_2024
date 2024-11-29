@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 
     <div>
         <CategoryMenu
@@ -173,4 +173,14 @@ export default {
 }
 </style>
 
+ -->
+<template>
 
+   <RouterView/>
+
+</template>
+<script>
+
+import { RouterView } from 'vue-router';
+
+</script>
