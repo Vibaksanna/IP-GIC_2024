@@ -50,6 +50,10 @@ export default {
     border-radius: 10%;
     padding: 20px;
     margin: 8px;
+    transition: transform .2s
+}
+.card:hover{
+    transform: scale(1.15);
 }
 
 h2 {

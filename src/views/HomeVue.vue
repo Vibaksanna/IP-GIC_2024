@@ -1,6 +1,19 @@
 <template>
 
     <div>
+        <Header/>
+    </div>
+
+    <div>
+        <NavBar/>
+    </div>
+
+    <div>
+        <Hiro/>
+    </div>
+
+
+    <div>
         <CategoryMenu
             v-for="menu in menus.filter((menu) => menu.id !== 2)"
             :key="menu.id"
@@ -63,6 +76,9 @@
 
 <script>
 
+import Header from '../components/Header.vue'
+import NavBar from '@/components/NavBar.vue';
+import Hiro from '@/components/Hiro.vue';
 import CategoryMenu from '../components/CategoryMenu.vue';
 import CategoryComponent from '../components/CategoryComponent.vue';
 import CategoryPromotion from '../components/CategoryPromotion.vue';
@@ -70,10 +86,14 @@ import CategoryProduct from '../components/CategoryProduct.vue';
 import { useProductStore } from '../stores/Product.vue';
 import { mapState } from 'pinia';
 
+
 export default {
     
 
     components: {
+        Header,
+        NavBar,
+        Hiro,
         CategoryMenu,
         CategoryComponent,
         CategoryPromotion,
