@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->bigInteger('category_id')->unsigned();
-            $table->double('pricing');
-            $table->text('description');
-            $table->jsonb('images');
+            $table->string('name')->nullable(false);
+            $table->bigInteger('category_id')->unsigned()->nullable(false);
+            $table->double('price')->nullable(false);
+            $table->text('description')->nullable(false);
+            $table->text('images')->nullable();
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('categories');
+
+            // Create a non-null 'category_id' column, link it to 'id' in 'categories', enforcing a foreign key constraint.
+            //$table->foreignId('category_id')->constrained('categories')->nullable(false);
         });
     }
 
