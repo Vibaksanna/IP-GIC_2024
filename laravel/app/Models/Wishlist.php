@@ -10,7 +10,8 @@ class Wishlist extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ["product_id", "customer_id"];
+
+    protected $fillable = ['product_id', 'customer_id'];
 
     public function product()
     {
@@ -21,5 +22,4 @@ class Wishlist extends Model
     {
         return $this->belongsTo(Customer::class);
     }
-    
 }

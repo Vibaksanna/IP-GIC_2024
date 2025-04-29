@@ -12,7 +12,7 @@ return new class extends Migration
     {
         // Add the check constraint for the 'name' column
         DB::statement("ALTER TABLE categories ADD CONSTRAINT name_is_alpha 
-    CHECK (name REGEXP '^[A-Za-z[:space:]]+$')");
+        CHECK (name REGEXP '^[A-Za-z[:space:]]+$')");
     }
 
     /**
@@ -20,12 +20,17 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Remove the check constraint
-        $connection = DB::connection();
+        //  Remove the check constraint
+        // $connection = DB::connection();
     
-        if ($connection instanceof \Illuminate\Database\PostgresConnection || 
-            $connection instanceof \Illuminate\Database\MySqlConnection) {
-            DB::statement('ALTER TABLE categories DROP CONSTRAINT IF EXISTS name_is_alpha');
-        }
+        // if ($connection instanceof \Illuminate\Database\PostgresConnection || 
+        //     $connection instanceof \Illuminate\Database\MySqlConnection) {
+        //     DB::statement('ALTER TABLE categories DROP CONSTRAINT IF EXISTS name_is_alpha');
+        // }
+
+        // Remove the check constraint
+        DB::statement('ALTER TABLE categories DROP CHECK name_is_alpha');
+
+
     }
 };
