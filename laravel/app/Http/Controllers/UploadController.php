@@ -4,47 +4,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class UploadController extends Controller
 {
     public function upload(Request $request)
     {
-         // Validate the request        
-         $request->validate([            
-            'document' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',        
+        // Validate the request
+        $request->validate([
+            'document' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // Store the file        
-        $path = $request->file('document')->store('uploads');
+        // Store the file locally
+        $file = $request->file('document');
+        $extension = strtolower($file->getClientOriginalExtension());
+        $fileName = uniqid() . '.' . $extension;
 
-        // Return a response        
-        return response()->json(['path' => $path], 200);
-    }
-    
-    public function store(Request $request) 
-    {    
-        $request->validate([        
-            'image' => 'required|image|max:2048' // Validation rules for upload    
-        ]);    
-        
-        $image = $request->file('image');    
-        $fileName = uniqid() . '.' . $image->getClientOriginalExtension(); // G  
+        // Save locally
+        $localPath = $file->storeAs('uploads_image', $fileName, 'public');
 
-        $path = $image->storeAs('uploads', $fileName); // Store the original im 
+        // Save original file to MinIO
+        $fileContents = file_get_contents($file->getRealPath());
+        Storage::disk('minio')->put('uploads_image/' . $fileName, $fileContents);
 
-        return redirect()->route('gallery.index')->with('success', 'Image uploaded successfully!');    
-    }    
-    
-    public function destroy($id) 
-    {        
-        $image = Image::findOrFail($id);        
-        Storage::delete($image->path);        
-        $image->delete();        
-        return redirect()->route('gallery.index')->with('success', 'Image deleted successfully!');    
-    }    
-    
-    public function show($id) {        
-        $image = Image::findOrFail($id);        
-        return view('gallery.show', compact('image')); 
+        $thumbnailPath = null;
+
+        // Generate a thumbnail for images only
+        if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+            $image = Image::make($file)->resize(150, 150, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->encode($extension);
+
+            $thumbnailPath = 'thumbnails/' . $fileName;
+            Storage::disk('minio')->put($thumbnailPath, (string) $image);
+        }
+
+        // Return response
+        return response()->json([
+            'local_path' => $localPath,
+            'minio_path' => 'uploads_image/' . $fileName,
+            'thumbnail_path' => $thumbnailPath,
+        ], 200);
     }
 }
